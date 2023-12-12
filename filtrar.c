@@ -14,10 +14,12 @@ typedef struct{
     marca marcVeic;
 } veiculo;
 
-veiculo procurarVeiculo(char *parametro, char *nomeArquivo) {
+veiculo *procurarVeiculo(char *parametro, char *nomeArquivo) {
     FILE *arquivo;
     char linha[100]; // Tamanho arbitrário para armazenar cada linha do arquivo
-    veiculo Vbusca;
+    veiculo Vbusca, vetVeiculo[350];
+    int i = 0;
+
 
     arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
@@ -27,8 +29,9 @@ veiculo procurarVeiculo(char *parametro, char *nomeArquivo) {
 
     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
         // Verifica se o parâmetro está presente na linha
+
         if (strstr(linha, parametro) != NULL) {
-            printf("%s", linha); // Imprime a linha se o parâmetro for encontrado
+            printf("Carro %d: %s \n", i, linha); // Imprime a linha se o parâmetro for encontrado
             Vbusca.preco = atoi(strtok(linha,","));
             Vbusca.ano = atoi(strtok(NULL,","));
             strcpy(Vbusca.marcVeic.marc, strtok(NULL,","));
@@ -41,34 +44,22 @@ veiculo procurarVeiculo(char *parametro, char *nomeArquivo) {
             strcpy(Vbusca.tamanho, strtok(NULL,","));
             strcpy(Vbusca.tipo, strtok(NULL,","));
             strcpy(Vbusca.cor, strtok(NULL,","));
-            break;
+            vetVeiculo[i] = Vbusca;
+            i++;
         }
     }
 
     fclose(arquivo);
-    return Vbusca;
+    return vetVeiculo;
 }
 
 
 int main() {
-    char *parametroDeBusca = "ford"; // Substitua pelo parâmetro desejado
+    char *parametroDeBusca = "fantasia"; // Substitua pelo parâmetro desejado
 
-   veiculo carro = procurarVeiculo(parametroDeBusca, "veiculos_ofertas.csv");
 
-            printf("Veiculo %d:\n", 1);
-            printf("Preço: %.2f\n", carro.preco);
-            printf("Ano: %d\n", carro.ano);
-            printf("Modelo: %s\n", carro.modelo);
-            printf("Condição: %s\n", carro.condicao);
-            printf("Combustível: %s\n", carro.combustivel);
-            printf("Odometro: %.2f\n", carro.odometro);
-            printf("Status: %s\n", carro.status);
-            printf("Câmbio: %s\n", carro.cambio);
-            printf("Tamanho: %s\n", carro.tamanho);
-            printf("Tipo: %s\n", carro.tipo);
-            printf("Cor: %s\n", carro.cor);
-            printf("Marca: %s\n", carro.marcVeic.marc);
-            printf("\n");
+   veiculo *carro = procurarVeiculo(parametroDeBusca, "veiculos_ofertas.csv");
+
 
 
     return 0;
