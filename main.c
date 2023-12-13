@@ -28,130 +28,145 @@ char *veiculoToString(veiculo carro)
 }
 
 // Função para selecionar o parâmetro de filtro
-void exibirParametro(char *parametro)
+void selecionarParametro(char **parametro, char **tipoParametro)
 {
     int opcao;
 
-        printf("Opção o parâmetro para filtrar:\n");
-        printf("1. Marca\n");
-        printf("2. Modelo\n");
-        printf("3. Ano\n");
-        printf("4. Cor\n");
-        printf("5. Tipo\n");
-        printf("6. Combustivel\n");
-        printf("7. Status\n");
-        printf("8. Condicao\n");
-        printf("9. Tamanho\n");
-        printf("10. Preco\n");
-        printf("11. Odometro\n");
-        printf("12. Cambio\n");
-        printf("13. Sair\n");
+    printf("Opção o parâmetro para filtrar:\n");
+    printf("1. Marca\n");
+    printf("2. Modelo\n");
+    printf("3. Ano\n");
+    printf("4. Cor\n");
+    printf("5. Tipo\n");
+    printf("6. Combustivel\n");
+    printf("7. Status\n");
+    printf("8. Condicao\n");
+    printf("9. Tamanho\n");
+    printf("10. Preco\n");
+    printf("11. Odometro\n");
+    printf("12. Cambio\n");
+    printf("13. Sair\n");
 
-        printf("Digite o número correspondente ao parâmetro desejado: ");
-        scanf("%d", &opcao);
+    printf("Digite o número correspondente ao parâmetro desejado: ");
+    scanf("%d", &opcao);
 
-        switch (opcao)
-        {
-        case 1:
-            printf("Digite a marca desejada: ");
-            scanf(" %s", parametro);
-            break;
-        case 2:
-            printf("Digite o modelo desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 3:
-            printf("Digite o ano desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 4:
-            printf("Digite o cor desejada: ");
-            scanf(" %s", parametro);
-            break;
-        case 5:
-            printf("Digite o tipo desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 6:
-            printf("Digite o combustivel desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 7:
-            printf("Digite o status desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 8:
-            printf("Digite o condicao desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 9:
-            printf("Digite o tamanho desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 10:
-            printf("Digite o preco desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 11:
-            printf("Digite o odometro desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 12:
-            printf("Digite o cambio desejado: ");
-            scanf(" %s", parametro);
-            break;
-        case 13:
-            printf("Saindo do filtro...");
-            break;
-        default:
-            printf("Opção inválida.\n");
-            break;
-        }
+    switch (opcao)
+    {
+    case 1:
+        *tipoParametro = "marca";
+        printf("Digite a marca desejada: ");
+        scanf("%s", *parametro);
+        break;
+    case 2:
+        *tipoParametro = "modelo";
+        printf("Digite o modelo desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 3:
+        *tipoParametro = "ano";
+        printf("Digite o ano desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 4:
+        *tipoParametro = "cor";
+        printf("Digite o cor desejada: ");
+        scanf("%s", *parametro);
+        break;
+    case 5:
+        *tipoParametro = "tipo";
+        printf("Digite o tipo desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 6:
+        *tipoParametro = "combustivel";
+        printf("Digite o combustivel desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 7:
+        *tipoParametro = "status";
+        printf("Digite o status desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 8:
+        *tipoParametro = "condicao";
+        printf("Digite o condicao desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 9:
+        *tipoParametro = "tamanho";
+        printf("Digite o tamanho desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 10:
+        *tipoParametro = "preco";
+        printf("Digite o preco desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 11:
+        *tipoParametro = "odometro";
+        printf("Digite o odometro desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 12:
+        *tipoParametro = "cambio";
+        printf("Digite o cambio desejado: ");
+        scanf("%s", *parametro);
+        break;
+    case 13:
+        printf("Saindo do filtro...");
+        break;
+    default:
+        printf("Opção inválida.\n");
+        break;
+    }
 }
 
-veiculo *filtroDeBusca(char *parametro, const char *nomeArquivo, int *numCarrosEncontrados)
-{
+veiculo *filtroDeBusca(const char *tipoParametro, const char *valorParametro, const char *nomeArquivo, int *numCarrosEncontrados) {
     FILE *arquivo;
-
-    char linha[100];                                     // Tamanho arbitrário para armazenar cada linha do arquivo
-    veiculo *vetVeiculo = malloc(350 * sizeof(veiculo)); // Alocando espaço para 350 veículos
-    int i = 0;
+    char linha[100];
+    veiculo *vetVeiculo = malloc(350 * sizeof(veiculo));
+    int carrosEncontrados = 0;
 
     arquivo = fopen(nomeArquivo, "r");
-    if (arquivo == NULL)
-    {
+    if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.");
         return NULL;
     }
 
-    while (fgets(linha, sizeof(linha), arquivo) != NULL)
-    {
-        // Verifica se o parâmetro está presente na linha
-        if (strstr(linha, parametro) != NULL)
-        {
-            veiculo Vbusca;
-            // Preenche os campos da estrutura a partir da linha
-            Vbusca.preco = atof(strtok(linha, ","));
-            Vbusca.ano = atoi(strtok(NULL, ","));
-            strcpy(Vbusca.marca, strtok(NULL, ","));
-            strcpy(Vbusca.modelo, strtok(NULL, ","));
-            strcpy(Vbusca.condicao, strtok(NULL, ","));
-            strcpy(Vbusca.combustivel, strtok(NULL, ","));
-            Vbusca.odometro = atof(strtok(NULL, ","));
-            strcpy(Vbusca.status, strtok(NULL, ","));
-            strcpy(Vbusca.cambio, strtok(NULL, ","));
-            strcpy(Vbusca.tamanho, strtok(NULL, ","));
-            strcpy(Vbusca.tipo, strtok(NULL, ","));
-            strcpy(Vbusca.cor, strtok(NULL, ","));
-            vetVeiculo[i] = Vbusca;
-            i++;
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        veiculo Vbusca;
+        sscanf(linha, "%f,%d,%[^,],%[^,],%[^,],%[^,],%f,%[^,],%[^,],%[^,],%[^,],%[^,],",
+               &Vbusca.preco, &Vbusca.ano, Vbusca.marca, Vbusca.modelo, Vbusca.condicao,
+               Vbusca.combustivel, &Vbusca.odometro, Vbusca.status, Vbusca.cambio,
+               Vbusca.tamanho, Vbusca.tipo, Vbusca.cor);
+
+        if (strcmp(tipoParametro, "preco") == 0 && Vbusca.preco == atof(valorParametro)) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+            printf("\n%d. ", carrosEncontrados); // Mostra o índice
+            printf("Marca: %s\nModelo: %s\nAno: %d\nPreço: %.2f\n", Vbusca.marca, Vbusca.modelo, Vbusca.ano, Vbusca.preco);
+            // Exibir os demais campos necessários aqui
+        } else if (strcmp(tipoParametro, "ano") == 0 && Vbusca.ano == atoi(valorParametro)) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+            printf("\n%d. ", carrosEncontrados); // Mostra o índice
+            printf("Marca: %s\nModelo: %s\nAno: %d\nPreço: %.2f\n", Vbusca.marca, Vbusca.modelo, Vbusca.ano, Vbusca.preco);
+        } else if (strcmp(tipoParametro, "marca") == 0 && strcmp(Vbusca.marca, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+            printf("\n%d. ", carrosEncontrados); // Mostra o índice
+            printf("Marca: %s\nModelo: %s\nAno: %d\nPreço: %.2f\n", Vbusca.marca, Vbusca.modelo, Vbusca.ano, Vbusca.preco);
+            // Exibir os demais campos necessários aqui
         }
+        // Adicionar outras condições conforme necessário para outros tipos de parâmetro
+
     }
 
-    *numCarrosEncontrados = i;
+    (*numCarrosEncontrados) = carrosEncontrados;
     fclose(arquivo);
     return vetVeiculo;
 }
+
 // -------------------------------------- Taxas --------------------------------------
 
 void adicionarMarca(const char *arquivoMarcas, const char *marca)
@@ -323,7 +338,7 @@ int main()
     char *historicoVendas = "historico_vendas.csv";
 
     char *parametroDeBusca; // Substitua pelo parâmetro desejado
-    int numCarrosEncontrados = 0;
+    char *tipoParametro;
 
     int opcao;
     char veiculoComprado[TAM_LINHA]; // armazena as informações do veículo comprado
@@ -339,8 +354,15 @@ int main()
         switch (opcao)
         {
         case 1:
-            selecionarParametro(parametroDeBusca);
-            veiculo *carro = filtroDeBusca(parametroDeBusca, ofertas, &numCarrosEncontrados);
+            selecionarParametro(&parametroDeBusca, &tipoParametro);
+            printf("Parametro: %s\n", tipoParametro);
+            printf("Valor de parametroDeBusca: %s\n", parametroDeBusca);
+            veiculo *carro;
+            int *numCarrosEncontrados = 0;
+
+            carro = filtroDeBusca(tipoParametro, parametroDeBusca, ofertas, &numCarrosEncontrados);
+            
+            printf("%d carros encontrados.\n", numCarrosEncontrados); // Adicione essa linha
             if (numCarrosEncontrados > 0)
             {
                 printf("Foram encontrados os seguintes carros:\n");
