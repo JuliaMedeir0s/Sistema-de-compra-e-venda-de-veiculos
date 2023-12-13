@@ -8,24 +8,9 @@
 // -------------------------------------- Filtro de Busca --------------------------------------
 typedef struct
 {
-    float preco, odometro;
-    int ano;
+    int preco, ano, odometro;
     char marca[20], modelo[20], condicao[20], combustivel[20], status[20], cambio[20], tamanho[20], tipo[20], cor[20];
 } veiculo;
-
-// Função para transformar os dados do veículo em uma string formatada
-char *veiculoToString(veiculo carro)
-{
-    static char veiculoString[TAM_LINHA]; // String para armazenar os dados do veículo
-
-    // Formata os dados do veículo em uma string
-    sprintf(veiculoString, "%.2f,%d,%s,%s,%s,%s,%.2f,%s,%s,%s,%s,%s",
-            carro.preco, carro.ano, carro.marca, carro.modelo, carro.condicao,
-            carro.combustivel, carro.odometro, carro.status, carro.cambio, carro.tamanho,
-            carro.tipo, carro.cor);
-
-    return veiculoString;
-}
 
 // Função para selecionar o parâmetro de filtro
 void selecionarParametro(char **parametro, char **tipoParametro)
@@ -65,7 +50,7 @@ void selecionarParametro(char **parametro, char **tipoParametro)
     case 3:
         *tipoParametro = "ano";
         printf("Digite o ano desejado: ");
-        scanf("%s", *parametro);
+        scanf("%d", *parametro);
         break;
     case 4:
         *tipoParametro = "cor";
@@ -100,12 +85,12 @@ void selecionarParametro(char **parametro, char **tipoParametro)
     case 10:
         *tipoParametro = "preco";
         printf("Digite o preco desejado: ");
-        scanf("%s", *parametro);
+        scanf("%d", *parametro);
         break;
     case 11:
         *tipoParametro = "odometro";
         printf("Digite o odometro desejado: ");
-        scanf("%s", *parametro);
+        scanf("%d", *parametro);
         break;
     case 12:
         *tipoParametro = "cambio";
@@ -135,27 +120,62 @@ veiculo *filtroDeBusca(const char *tipoParametro, const char *valorParametro, co
 
     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
         veiculo Vbusca;
-        sscanf(linha, "%f,%d,%[^,],%[^,],%[^,],%[^,],%f,%[^,],%[^,],%[^,],%[^,],%[^,],",
+        sscanf(linha, "%d,%d,%[^,],%[^,],%[^,],%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],",
                &Vbusca.preco, &Vbusca.ano, Vbusca.marca, Vbusca.modelo, Vbusca.condicao,
                Vbusca.combustivel, &Vbusca.odometro, Vbusca.status, Vbusca.cambio,
                Vbusca.tamanho, Vbusca.tipo, Vbusca.cor);
 
-        if (strcmp(tipoParametro, "preco") == 0 && Vbusca.preco == atof(valorParametro)) {
+        if (strcmp(tipoParametro, "preco") == 0 && Vbusca.preco == atoi(valorParametro)) {
             vetVeiculo[carrosEncontrados] = Vbusca;
             carrosEncontrados++;
             // Exibir os demais campos necessários aqui
         } else if (strcmp(tipoParametro, "ano") == 0 && Vbusca.ano == atoi(valorParametro)) {
             vetVeiculo[carrosEncontrados] = Vbusca;
             carrosEncontrados++;
-            
+
         } else if (strcmp(tipoParametro, "marca") == 0 && strcmp(Vbusca.marca, valorParametro) == 0) {
             vetVeiculo[carrosEncontrados] = Vbusca;
             carrosEncontrados++;
-            
-            // Exibir os demais campos necessários aqui
-        }
-        // Adicionar outras condições conforme necessário para outros tipos de parâmetro
 
+
+        } else if (strcmp(tipoParametro, "modelo") == 0 && strcmp(Vbusca.modelo, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "condicao") == 0 && strcmp(Vbusca.condicao, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "commbustivel") == 0 && strcmp(Vbusca.combustivel, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "odometro") == 0 && Vbusca.odometro == atoi(valorParametro)) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "status") == 0 && strcmp(Vbusca.status, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "cambio") == 0 && strcmp(Vbusca.cambio, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "tamanho") == 0 && strcmp(Vbusca.tamanho, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        } else if (strcmp(tipoParametro, "tipo") == 0 && strcmp(Vbusca.tipo, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+
+        } else if (strcmp(tipoParametro, "cor") == 0 && strcmp(Vbusca.cor, valorParametro) == 0) {
+            vetVeiculo[carrosEncontrados] = Vbusca;
+            carrosEncontrados++;
+
+        }
     }
 
     (*numCarrosEncontrados) = carrosEncontrados;
@@ -217,50 +237,42 @@ void adicionarMarca(const char *arquivoMarcas, const char *marca)
 // -------------------------------------- Compra de Veículos --------------------------------------
 
 // Função para remover um veículo do arquivo de ofertas
-void comprarVeiculo(const char *ofertas, const char *estoque, const char *historico, char *veiculoComprado, int novoPreco, const char *marcas)
-{
-    // abre os arquivos
+void comprarVeiculo(const char *ofertas, const char *estoque, const char *historico, char *veiculoComprado, int novoPreco, const char *marcas) {
     FILE *fileOfertas = fopen(ofertas, "r");
     FILE *fileEstoque = fopen(estoque, "a");
     FILE *fileHistorico = fopen(historico, "a");
 
-    // verifica se os arquivos abriram corretamente
-    if (fileOfertas == NULL || fileEstoque == NULL || fileHistorico == NULL)
-    {
+    if (fileOfertas == NULL || fileEstoque == NULL || fileHistorico == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
 
-    // Cria um arquivo temporário em memória, para passar as linhas que não correspondem ao veículo comprado
-    FILE *temporarioFile = tmpfile(); // tmpfile() cria um arquivo temporário na memória RAM, essa função pertence a biblioteca stdio.h
+    FILE *temporarioFile = tmpfile();
 
-    char linha[TAM_LINHA]; // para ler cada linha do documento de ofertas
-    int encontrado = 0;    // usar para controlar se o veículo foi encontrado
+    char linha[TAM_LINHA];
+    int encontrado = 0;
 
-    // lê todas as linhas do arquivo ofertas
-    while (fgets(linha, TAM_LINHA, fileOfertas) != NULL)
-    {
+    while (fgets(linha, TAM_LINHA, fileOfertas) != NULL) {
+        if (strstr(linha, veiculoComprado) == NULL) {
+            fprintf(temporarioFile, "%s", linha);
+        } else {
+            encontrado = 1;
 
-        if (strcmp(linha, veiculoComprado) != 0)
-        {                                         // verifica se o veiculo foi encontrado, se não...
-            fprintf(temporarioFile, "%s", linha); // Escreve as linhas não desejadas no arquivo temporário
-        }
-        else
-        {
-            encontrado = 1; // veículo encontrado
+            char *posicaoVirgula = strchr(linha, ',');
+            if (posicaoVirgula != NULL) {
+                int precoOriginal = atoi(posicaoVirgula + 1);
 
-            // Separa a linha em tokens para obter o preço original
-            char *token = strtok(linha, ",");
-            int precoOriginal = atoi(token); // Converte o preço atual para int
+                // Armazena a parte da linha após a vírgula
+                char *restoLinha = posicaoVirgula + 1;
 
-            // Adiciona o novo preço à linha antes de escrever no arquivo de estoque
-            // a função strchr() é responsável por buscar a primeira ocorrencia de um caracter em uma string
-            fprintf(fileEstoque, "%d,%s", novoPreco, strchr(linha, ',')); // altera para o novo preço
+                fprintf(fileEstoque, "%d,%s", novoPreco, restoLinha);
 
-            // também precisa adicionar ao historico de compras,
-            time_t t = time(NULL);
-            struct tm tm = *localtime(&t);
-            fprintf(fileHistorico, "%s,%d-%02d-%02d %02d:%02d:%02d\n", linha, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+                time_t t = time(NULL);
+                struct tm tm = *localtime(&t);
+                fprintf(fileHistorico, "%s,%d-%02d-%02d %02d:%02d:%02d\n", linha, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+            } else {
+                printf("Formato incorreto da linha no arquivo de ofertas.\n");
+            }
         }
     }
 
@@ -268,37 +280,31 @@ void comprarVeiculo(const char *ofertas, const char *estoque, const char *histor
     fclose(fileEstoque);
     fclose(fileHistorico);
 
-    // Reescreve o arquivo de ofertas com as informações atualizadas, excluindo o veículo comprado
     freopen(ofertas, "w", fileOfertas);
-    rewind(temporarioFile); // move o indicador de posição no arquivo para o início
+    rewind(temporarioFile);
 
-    // vai repetir enquando o arquivo temporario não chegar ao final
-    while (fgets(linha, TAM_LINHA, temporarioFile) != NULL)
-    {
+    while (fgets(linha, TAM_LINHA, temporarioFile) != NULL) {
         fprintf(fileOfertas, "%s", linha);
     }
-    // identificar a marca para saber se já existe taxa dela no arquivo de marcas
-    char *token = strtok(veiculoComprado, ","); // primeiro informação da linha
-    token = strtok(NULL, ",");                  // segunda informação da linha
-    token = strtok(NULL, ",");                  // Terceira informação da linha
 
-    if (token != NULL)
-    {
-        adicionarMarca(marcas, token); // chama a função que vai verificar a existencia e adicionar caso não exista
+    char *token = strtok(veiculoComprado, ",");
+    token = strtok(NULL, ",");
+    token = strtok(NULL, ",");
+
+    if (token != NULL) {
+        adicionarMarca(marcas, token);
     }
 
     fclose(fileOfertas);
     fclose(temporarioFile);
 
-    if (!encontrado)
-    {
+    if (!encontrado) {
         printf("Veículo não encontrado na oferta.\n");
-    }
-    else
-    {
+    } else {
         printf("Veículo removido da oferta e adicionado ao estoque. Registro de compra adicionado ao histórico.\n");
     }
 }
+
 
 //---------------------------------------- Venda de veículos --------------------------------------------
 
@@ -341,6 +347,20 @@ void vendeVeiculo(char *veiculos_estoque, char *historico_vendas, char veiculoCo
     }
 }
 
+
+// Função para transformar os dados do veículo em uma string formatada
+char *veiculoToString(veiculo carro)
+{
+    static char veiculoString[TAM_LINHA]; // String para armazenar os dados do veículo
+
+    // Formata os dados do veículo em uma string
+    sprintf(veiculoString, "%d,%d,%s,%s,%s,%s,%d,%s,%s,%s,%s,%s",
+            carro.preco, carro.ano, carro.marca, carro.modelo, carro.condicao,
+            carro.combustivel, carro.odometro, carro.status, carro.cambio, carro.tamanho,
+            carro.tipo, carro.cor);
+
+    return veiculoString;
+}
 // -------------------------------------- Função para exibir o menu --------------------------------------
 void exibirMenu()
 {
@@ -405,7 +425,7 @@ int main()
                 printf("Foram encontrados os seguintes carros:\n");
                 for (int i = 0; i < numCarrosEncontrados; i++)
                 {
-                    printf("%d. %s - %s - %d - %.2f - %s - %s - %s - %s - %s - %s - %s - %.2f \n", i + 1, carro[i].marca, carro[i].modelo, carro[i].ano, carro[i].preco, carro[i].cor, carro[i].tipo, carro[i].combustivel, carro[i].condicao, carro[i].status, carro[i].tamanho, carro[i].cambio, carro[i].odometro);
+                    printf("%d. %s - %s - %d - %d - %s - %s - %s - %s - %s - %s - %s - %d \n", i + 1, carro[i].marca, carro[i].modelo, carro[i].ano, carro[i].preco, carro[i].cor, carro[i].tipo, carro[i].combustivel, carro[i].condicao, carro[i].status, carro[i].tamanho, carro[i].cambio, carro[i].odometro);
                 }
 
                 int escolha;
@@ -416,6 +436,7 @@ int main()
                 {
                     veiculo carroSelecionado = carro[escolha - 1];
                     char *stringCarro = veiculoToString(carroSelecionado);
+                    printf("%s", stringCarro);
                     printf("Qual o novo preço dele?");
                     scanf("%d", &novoPreco);
                     comprarVeiculo(ofertas, estoque, historicoCompras, stringCarro, novoPreco, taxas);
