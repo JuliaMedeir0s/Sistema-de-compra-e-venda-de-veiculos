@@ -54,51 +54,51 @@ void exibirParametro(char *parametro)
         {
         case 1:
             printf("Digite a marca desejada: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 2:
             printf("Digite o modelo desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 3:
             printf("Digite o ano desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 4:
             printf("Digite o cor desejada: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 5:
             printf("Digite o tipo desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 6:
             printf("Digite o combustivel desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 7:
             printf("Digite o status desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 8:
             printf("Digite o condicao desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 9:
             printf("Digite o tamanho desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 10:
             printf("Digite o preco desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 11:
             printf("Digite o odometro desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 12:
             printf("Digite o cambio desejado: ");
-            scanf("%s", parametro);
+            scanf(" %s", parametro);
             break;
         case 13:
             printf("Saindo do filtro...");
