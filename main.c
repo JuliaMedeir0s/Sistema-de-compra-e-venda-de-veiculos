@@ -143,19 +143,15 @@ veiculo *filtroDeBusca(const char *tipoParametro, const char *valorParametro, co
         if (strcmp(tipoParametro, "preco") == 0 && Vbusca.preco == atof(valorParametro)) {
             vetVeiculo[carrosEncontrados] = Vbusca;
             carrosEncontrados++;
-            printf("\n%d. ", carrosEncontrados); // Mostra o índice
-            printf("Marca: %s\nModelo: %s\nAno: %d\nPreço: %.2f\n", Vbusca.marca, Vbusca.modelo, Vbusca.ano, Vbusca.preco);
             // Exibir os demais campos necessários aqui
         } else if (strcmp(tipoParametro, "ano") == 0 && Vbusca.ano == atoi(valorParametro)) {
             vetVeiculo[carrosEncontrados] = Vbusca;
             carrosEncontrados++;
-            printf("\n%d. ", carrosEncontrados); // Mostra o índice
-            printf("Marca: %s\nModelo: %s\nAno: %d\nPreço: %.2f\n", Vbusca.marca, Vbusca.modelo, Vbusca.ano, Vbusca.preco);
+            
         } else if (strcmp(tipoParametro, "marca") == 0 && strcmp(Vbusca.marca, valorParametro) == 0) {
             vetVeiculo[carrosEncontrados] = Vbusca;
             carrosEncontrados++;
-            printf("\n%d. ", carrosEncontrados); // Mostra o índice
-            printf("Marca: %s\nModelo: %s\nAno: %d\nPreço: %.2f\n", Vbusca.marca, Vbusca.modelo, Vbusca.ano, Vbusca.preco);
+            
             // Exibir os demais campos necessários aqui
         }
         // Adicionar outras condições conforme necessário para outros tipos de parâmetro
